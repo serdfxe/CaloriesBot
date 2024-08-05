@@ -3,6 +3,7 @@ from aiogram import Bot, Dispatcher
 
 from bot.modules.diary import diary_router
 from bot.modules.start import start_router
+from bot.modules.help import help_router
 
 from config import OWNER_ID, TOKEN
 
@@ -13,6 +14,7 @@ def create_dp() -> Dispatcher:
     dp.include_routers(
         start_router,
         diary_router,
+        help_router,
     )
 
     return dp
