@@ -10,14 +10,10 @@ class DBTool():
     @classmethod
     def filter(cls, *args, **kwargs):
         with cls.uow as u:
-            if not len(kwargs) and not len(args):
-                return u.session.query(cls)
-            if len(args):
-                return u.session.query(cls).filter(*args)
-            return u.session.query(cls).filter_by(**kwargs)# .first() OR .all()
+            return u.session.query(cls).filter_by(**kwargs).filter(*args) # .first() OR .all()
 
     @classmethod
-    def all(cls, **kwargs):
+    def all(cls):
         return cls.session.query(cls).all()
 
     @classmethod
@@ -38,21 +34,23 @@ class DBTool():
     def update(cls, obj, **kwargs):
         with cls.uow as u:
             u.session.query(cls).filter_by(id=obj.id).update(kwargs)
+
             u.commit()
 
     @classmethod
-    def delete_first(cls, **kwargs):
+    def delete_first(cls, *args, **kwargs):
         with cls.uow as u:
-            obj = u.session.query(cls).filter_by(**kwargs).first()
+            obj = u.session.query(cls).filter_by(**kwargs).filter(*args).first()
 
             u.session.delete(obj)
 
             u.session.commit()
 
     @classmethod
-    def delete_all(cls, **kwargs):
+    def delete_all(cls, *args, **kwargs):
         with cls.uow as u:
-            u.session.query(cls).filter_by(**kwargs).delete()
+            u.session.query(cls).filter_by(**kwargs).filter(*args).delete()
+
             u.commit()
 
     def as_dict(self):

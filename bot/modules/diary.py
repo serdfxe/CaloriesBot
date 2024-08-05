@@ -37,6 +37,18 @@ async def diary_command_handler(message: Message):
     else:
         await message.answer(today_summary_message.format(calories=cpfc[0], protein=cpfc[1], fats=cpfc[2], carbs=cpfc[3]))
 
+@diary_router.message(Command("clear"))
+async def clear_command_handler(message: Message):
+    try:
+        DiaryService.clear_today_summary(user_id=message.from_user.id)
+    except Exception as e:
+        await message.answer("Что-то пошло не так ;( Попробуйте позже.")
+
+        raise e
+    else:
+        await message.answer("История сегодня очищена.")
+
+
 @diary_router.message(lambda m: m.text[0] != "/")
 async def dish_description_handler(message: Message):
     try:
