@@ -17,4 +17,4 @@ class CaloriesCounterService:
         if response == "exc":
             raise IllegibilityException
         
-        return [int(i) for i in response.split(', ')]
+        return [int(float(i)) for i in response.split(', ')]
