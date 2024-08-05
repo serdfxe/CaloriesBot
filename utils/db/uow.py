@@ -29,12 +29,12 @@ class UOW(ABC):
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is not None:
             self.rollback()
-        # self.session.close()
+        self.session.close()
 
 
 class AlchemyUOW(UOW):
     def begin(self):
-        # self.session.begin()
+        self.session.begin()
         return
 
     def rollback(self):

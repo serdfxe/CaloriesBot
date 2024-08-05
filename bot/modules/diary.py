@@ -20,7 +20,9 @@ async def cpfc_handler(callback: CallbackQuery):
 
         DiaryService.record(callback.from_user.id, cpfc)
     except Exception as e:
-        await callback.message.edit_text(callback.message.text + "\n\nЧто-то пошло не так ;(", reply_markup=None)
+        await callback.message.edit_text(callback.message.text + "\n\nЧто-то пошло не так ;(")
+
+        raise e
     else:
         await callback.message.edit_text(callback.message.text + "\n\nЗаписал в дневник. Посмотреть: /diary", reply_markup=None)
 

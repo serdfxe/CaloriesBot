@@ -5,7 +5,7 @@ from utils.db.uow import AlchemyUOW
 
 class DBTool():
     session = Session()
-    uow = AlchemyUOW(session)
+    uow = AlchemyUOW(Session())
 
     @classmethod
     def filter(cls, *args, **kwargs):
@@ -21,15 +21,15 @@ class DBTool():
 
     @classmethod
     def new(cls, **kwargs):
-        with cls.uow:
+        with cls.uow as u:
             new = cls(**kwargs)
 
-            cls.uow.session.add(new)
+            u.session.add(new)
 
-            cls.uow.commit()
+            u.commit()
 
-            cls.uow.session.refresh(new)
-            cls.uow.session.expunge(new)
+            u.session.refresh(new)
+            u.session.expunge(new)
         
             return new
 
@@ -43,8 +43,10 @@ class DBTool():
     def delete_first(cls, **kwargs):
         with cls.uow as u:
             obj = cls.session.query(cls).filter_by(**kwargs).first()
-            cls.session.delete(obj)
-            cls.session.commit()
+
+            u.session.delete(obj)
+            
+            u.session.commit()
 
     @classmethod
     def delete_all(cls, **kwargs):
