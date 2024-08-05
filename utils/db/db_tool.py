@@ -9,11 +9,12 @@ class DBTool():
 
     @classmethod
     def filter(cls, *args, **kwargs):
-        if not len(kwargs) and not len(args):
-            return cls.session.query(cls)
-        if len(args):
-            return cls.session.query(cls).filter(*args)
-        return cls.session.query(cls).filter_by(**kwargs)# .first() OR .all()
+        with cls.uow as u:
+            if not len(kwargs) and not len(args):
+                return u.session.query(cls)
+            if len(args):
+                return u.session.query(cls).filter(*args)
+            return u.session.query(cls).filter_by(**kwargs)# .first() OR .all()
 
     @classmethod
     def all(cls, **kwargs):
@@ -42,10 +43,10 @@ class DBTool():
     @classmethod
     def delete_first(cls, **kwargs):
         with cls.uow as u:
-            obj = cls.session.query(cls).filter_by(**kwargs).first()
+            obj = u.session.query(cls).filter_by(**kwargs).first()
 
             u.session.delete(obj)
-            
+
             u.session.commit()
 
     @classmethod

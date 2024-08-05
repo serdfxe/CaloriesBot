@@ -4,11 +4,6 @@ from abc import ABC, abstractmethod
 class UOW(ABC):
     def __init__(self, session):
         self.session = session
-        
-    def __call__(self, repo):
-        self.session = repo.session
-        
-        return self
 
     @abstractmethod
     def begin(self):
