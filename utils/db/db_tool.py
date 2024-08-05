@@ -5,7 +5,7 @@ from utils.db.uow import AlchemyUOW
 
 class DBTool():
     session = Session()
-    uow = AlchemyUOW(Session())
+    uow = AlchemyUOW()
 
     @classmethod
     def filter(cls, *args, **kwargs):

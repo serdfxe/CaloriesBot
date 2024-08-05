@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
 
+from utils.db.session import Session
+
 
 class UOW(ABC):
-    def __init__(self, session):
-        self.session = session
+    def __init__(self):
+        # self.session = session
+        ...
 
     @abstractmethod
     def begin(self):
@@ -29,7 +32,7 @@ class UOW(ABC):
 
 class AlchemyUOW(UOW):
     def begin(self):
-        self.session.begin()
+        self.session = Session()
         return
 
     def rollback(self):
