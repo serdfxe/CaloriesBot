@@ -37,7 +37,7 @@ async def diary_command_handler(message: Message):
     else:
         await message.answer(today_summary_message.format(calories=cpfc[0], protein=cpfc[1], fats=cpfc[2], carbs=cpfc[3]))
 
-@diary_router.message()
+@diary_router.message(lambda m: m.text[0] != "/")
 async def dish_description_handler(message: Message):
     try:
         cpfc = CaloriesCounterService.count_cpfc(message.text)

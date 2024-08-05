@@ -10,7 +10,7 @@ from bot.filters.registered import Registered
 start_router = Router(name="start_router")
 
 
-@start_router.message(Command("start"), ~Registered())
+@start_router.message(~Registered())
 async def not_registered_start_message_handler(message: Message):
     try:
         RegisterService.register_user(RegisterUserSchema.model_validate(message.from_user))
@@ -19,9 +19,9 @@ async def not_registered_start_message_handler(message: Message):
 
         raise e
     else:
-        await message.answer("Добро пожаловать! Напиши подробное описание блюда.")
+        await message.answer("Добро пожаловать! Напиши подробное описание блюда, а я посчитаю его КБЖУ.")
 
 @start_router.message(Command("start"), Registered())
 async def registered_start_message_handler(message: Message):
-    await message.answer("Приветствую! Напиши подробное описание блюда.")
+    await message.answer("Приветствую! Напиши подробное описание блюда, а я посчитаю его КБЖУ.")
 
