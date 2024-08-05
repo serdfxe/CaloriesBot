@@ -27,11 +27,6 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-@dp.message(CommandStart())
-async def start(message: Message) -> None:
-    await message.answer('Привет!')
-
-
 @app.post("/webhook")
 async def webhook(request: Request) -> None:
     update = Update.model_validate(await request.json(), context={"bot": bot})
